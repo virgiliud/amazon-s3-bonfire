@@ -34,6 +34,8 @@ There are a few things that need to be added/improved:
 
 * showing upload errors in the template rather then echoing them
 
+* creating thumbnails for each uploaded image either on server or Amazon S3 
+
 * temporarily storing uploaded files on the server by deleting them after upload to S3. Uploading files to your server's tmp folder would be ideal because it stores files temporarily and automatically deletes them when your function finishes executing.
 
 
