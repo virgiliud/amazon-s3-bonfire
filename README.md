@@ -4,11 +4,11 @@ amazon-s3-bonfire
 Bonfire module for uploading images to Amazon S3. Works on Bonfire v0.6.
 
 
-### Features
+### Module Features
 
- * Users can upload images to S3.
- * Users can view/delete their own uploads from S3.
- * Information about uploaded images stored in db table and retrieved from db table to minimize S3 requests.
+ * Users can upload images to Amazon S3.
+ * Users can view/delete their images.
+ * Uploads to S3 are recorded in a database table to minimize API requests.
  * File handling using Codeigniter's File Uploading Class.
 
 
