@@ -1,0 +1,30 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+$lang['amazonupload_manage']			= 'Manage AmazonUpload';
+$lang['amazonupload_edit']				= 'Edit';
+$lang['amazonupload_true']				= 'True';
+$lang['amazonupload_false']				= 'False';
+$lang['amazonupload_create']			= 'Create';
+$lang['amazonupload_list']				= 'List';
+$lang['amazonupload_new']				= 'New';
+$lang['amazonupload_edit_text']			= 'Edit this to suit your needs';
+$lang['amazonupload_no_records']			= 'There aren\'t any amazonupload in the system.';
+$lang['amazonupload_create_new']			= 'Create a new AmazonUpload.';
+$lang['amazonupload_create_success']			= 'AmazonUpload successfully created.';
+$lang['amazonupload_create_failure']			= 'There was a problem creating the amazonupload: ';
+$lang['amazonupload_create_new_button']			= 'Create New AmazonUpload';
+$lang['amazonupload_invalid_id']			= 'Invalid AmazonUpload ID.';
+$lang['amazonupload_edit_success']			= 'AmazonUpload successfully saved.';
+$lang['amazonupload_edit_failure']			= 'There was a problem saving the amazonupload: ';
+$lang['amazonupload_delete_success']			= 'record(s) successfully deleted.';
+$lang['amazonupload_delete_failure']			= 'We could not delete the record: ';
+$lang['amazonupload_delete_error']			= 'You have not selected any records to delete.';
+$lang['amazonupload_actions']			= 'Actions';
+$lang['amazonupload_cancel']			= 'Cancel';
+$lang['amazonupload_delete_record']			= 'Delete this AmazonUpload';
+$lang['amazonupload_delete_confirm']			= 'Are you sure you want to delete this amazonupload?';
+$lang['amazonupload_edit_heading']			= 'Edit AmazonUpload';
+
+// Activities
+$lang['amazonupload_act_create_record']			= 'Created record with ID';
+$lang['amazonupload_act_edit_record']			= 'Updated record with ID';
+$lang['amazonupload_act_delete_record']			= 'Deleted record with ID';
