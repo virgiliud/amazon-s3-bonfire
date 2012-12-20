@@ -23,7 +23,7 @@ Bonfire module for uploading images to Amazon S3. Works on Bonfire v0.6.
 
  * Log into your Bonfire application as Developer. In Database Migrations > Modules, select `002_Install_s3.php` for the `Amazonupload` module and click migrate module. This will install the db table for storing data about images uploaded to S3.
 
- * Test the module by logging in as a user and going to yoursite/index.php/admin/aws/amazonupload. The module is made for users only.
+ * Test the module by logging in as a user and going to `yoursite/index.php/admin/aws/amazonupload`. The module is made to be used by users only.
 
 
 ### That's all! 
