@@ -10,7 +10,7 @@
 					
 					<th>User ID</th>
 					<th>Filename</th>
-					<th>Modified</th>
+					<th>Created</th>
 				</tr>
 			</thead>
 			<?php if (isset($records) && is_array($records) && count($records)) : ?>
@@ -40,7 +40,7 @@
 				<?php endif; ?>
 			
 				<td><?php echo $record->amazonupload_filename?></td>
-				<td><?php echo $record->modified_on?></td>
+				<td><?php echo $record->created_on?></td>
 				</tr>
 			<?php endforeach; ?>
 			<?php else: ?>

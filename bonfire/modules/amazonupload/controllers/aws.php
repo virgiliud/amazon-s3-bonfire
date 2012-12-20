@@ -1,5 +1,27 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/*
+	Copyright (c) 2013 Virgiliu D
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+*/
+
 class aws extends Admin_Controller {
 
 	//--------------------------------------------------------------------
@@ -19,7 +41,6 @@ class aws extends Admin_Controller {
 	//--------------------------------------------------------------------
 
 
-
 	/*
 		Method: index()
 
@@ -37,10 +58,10 @@ class aws extends Admin_Controller {
 			
 			if (is_array($checked) && count($checked))
 			{
-				//get filenames of ids checked
+				//get filenames of record ids checked
 				$filenames = $this->amazonupload_model->filenames($checked, $user_id);			
 				
-				//create a multidimensional array with S3 object keys
+				//create a multidimensional array with S3 object keys (to be used in API request for deleting objects)
 				$keys_array = array();
 				
 				foreach ($filenames as $i => $values) 
@@ -66,13 +87,13 @@ class aws extends Admin_Controller {
 					'objects' => $keys_array
 				));
 				
-				// Success
+				// If succesful delete db records.
 				if($response->isOK()) //Note: If deleting an object that does not exist, Amazon S3 returns a success message, not an error message.
 				{
 					$result = FALSE;
 					foreach ($checked as $pid)
 					{
-						$result = $this->amazonupload_model->delete($pid);
+						$result = $this->amazonupload_model->delete($pid); //delete db records
 					}
 	
 					if ($result)
@@ -91,8 +112,9 @@ class aws extends Admin_Controller {
 			
 			}
 		}
-
-		$records = $this->amazonupload_model->find_all_by('amazonupload_user_id', $user_id); //show records that belong only to the user logged in
+		
+		//get records that belong to the user logged in
+		$records = $this->amazonupload_model->find_all_by('amazonupload_user_id', $user_id); 
 
 		Template::set('records', $records);
 		Template::set('toolbar_title', 'Manage AmazonUpload');
@@ -159,7 +181,7 @@ class aws extends Admin_Controller {
 			$_POST['id'] = $id;
 		}
 
-		$this->form_validation->set_rules('userfile', 'Image', 'xss_clean'); //added
+		$this->form_validation->set_rules('userfile', 'Image', 'xss_clean'); //added rules for upload
 		$this->form_validation->set_rules('amazonupload_user_id','User ID','integer|max_length[11]');
 		$this->form_validation->set_rules('amazonupload_filename','Filename','trim|xss_clean|alpha_extra|max_length[550]');
 
@@ -173,20 +195,20 @@ class aws extends Admin_Controller {
 		//Handle upload
 		if ($_FILES['userfile']['error'] !== 4 && $_FILES['userfile']['error'] == 0) //if new file is selected and no uploading errors
 		{
-			//Sanitize the file name
+			//sanitize the file name
 			$this->security->sanitize_filename($_FILES['userfile']['name']); 
 			
-			//Validate file 
-			$config['upload_path'] = './tmp/';
+			//validate file
+			$config['upload_path'] = './s3_images/';
 			$config['allowed_types'] = 'jpg|png';
 			$config['encrypt_name'] = TRUE;
-			$config['max_size']	= '1500'; //in KB
+			$config['max_size']	= '1500'; //in KB 
 			
 			$this->load->library('upload', $config);	
 						
 			if (! $this->upload->do_upload())
 			{
-				//to do: show error in temnplate
+				//to fix: show error in template instead of printing
 				$error = array('error' => $this->upload->display_errors());
 				print "<br /><br /><br /><br /><br /><br />";
 				print_r($error);
@@ -195,12 +217,12 @@ class aws extends Admin_Controller {
 			}
 			else
 			{
-				if ($this->upload->is_image = 1) //if file is image (extra validation)
+				if ($this->upload->is_image = 1) //if file is an image (extra validation)
 				{
 					//user id
 					$user_id = $this->current_user->id;
 					
-					//Image path
+					//create file path
 					$filename = $this->upload->file_name;
 					$filepath = $this->upload->upload_path.$filename;
 					
@@ -212,36 +234,41 @@ class aws extends Admin_Controller {
 					
 					$bucket = 'your_bucket_name'; //your bucket name
 					
-					//Check if object exists to avoid overwritting
+					//Optional: Check if object exists in S3 bucket to avoid overwritting. 
+					//a bettter solution would be check in your DB table and not make an extra API request.
 					$object_exists = $s3->if_object_exists($bucket, $filename);
 					
 					if ($object_exists == TRUE)
 					{
-						echo "<br /><br /><br /><br /><br /> dublicate name!";
+						echo "<br /><br /><br /><br /><br /> Dublicate file name!";
 						return FALSE;
 					}
-	 
-					// Success? (Boolean, not a CFResponse object)
-					//var_dump($object_exists);
 					
-					//upload the file 			
+					/*
+					Upload the file to your S3 bucket.
+					
+					Parameters explained:
+					 
+					acl: File is made public.
+					storage: Uses Reduced Redundancy Storage to reduce storage cost.
+					Cache-Control: Cache files. Visitors won't make a new GET request every time they view the same web image.
+					user_id: Add user id in the object meta because it might be handy in the future. 
+					*/	
 					$response = $s3->create_object($bucket, $filename, array(
 						'fileUpload' => $filepath,
 						'acl' => AmazonS3::ACL_PUBLIC,
 						'contentType' => $this->upload->file_type,
 						'storage'     => AmazonS3::STORAGE_REDUCED,
 						'headers'     => array( // raw headers
-							  'Cache-Control'    => 'max-age=315360000', //is this correct?
-							  'Expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years"))
+							  'Cache-Control'    => 'max-age=315360000', //verify if correct format
+							  'Expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")) //verify if correct format
 						),
 						'meta' => array(
 							 'user_id' => $user_id
 						)
 						
 					));
-	
-					//var_dump($response->isOK()); 
-		
+			
 					//if upload succesful
 					if ($response->isOK())
 					{
@@ -252,7 +279,7 @@ class aws extends Admin_Controller {
 					}
 					else
 					{
-						//Error creating object
+						//Error creating object. To add: record API error in log.
 						return FALSE;
 					}
 				}

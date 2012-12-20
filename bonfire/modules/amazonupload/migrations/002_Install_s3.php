@@ -22,7 +22,7 @@ class Migration_Install_s3 extends Migration {
 				'constraint' => 550,
 				
 			),
-			'modified_on' => array(
+			'created_on' => array(
 				'type' => 'datetime',
 				'default' => '0000-00-00 00:00:00',
 			),

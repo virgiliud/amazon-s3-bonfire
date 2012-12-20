@@ -11,7 +11,7 @@ class Amazonupload_model extends BF_Model {
 	protected $modified_field = "modified_on";
 	
 	/*
-		Returns a multidimensional array of filenames uploaded by the user logged in.
+		Returns a multidimensional array with filenames uploaded by the user logged in.
 	*/
 	function filenames($checked, $user_id) 
     {
