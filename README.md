@@ -17,7 +17,7 @@ Bonfire module for uploading images to Amazon S3. Works on Bonfire v0.6.
 
  * Add all files to their appropriate folders in your Bonfire application.
 
- * Open the config.inc.php file located in `bonfire/codeigniter/libraries/awsphp/` and enter your Amazon S3 credentials.
+ * Open the `config.inc.php` file located in `bonfire/codeigniter/libraries/awsphp/` and enter your Amazon S3 credentials.
 
  * Add a context named `aws` to the contexts array in the `bonfire/application/config/application.php` file. Note: the context will appear when you're logged in as a user.
 
