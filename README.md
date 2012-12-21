@@ -28,13 +28,13 @@ Bonfire module for uploading images to Amazon S3. Works on Bonfire v0.6.
 
 ### That's all! 
 
-Contribuitions are welcomed!
+Contributers are welcomed!
 
 There are a few things that need to be added/improved:
 
 * showing upload errors in the template rather then echoing them
 
-* creating thumbnails for each uploaded image on own server or Amazon S3 
+* creating thumbnails for each uploaded image 
 
 * temporarily storing uploaded files on the server by deleting them after upload to S3. Uploading files to your server's tmp folder would be ideal because it stores files temporarily and automatically deletes them when your function finishes executing.
 
