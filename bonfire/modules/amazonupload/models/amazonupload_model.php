@@ -6,9 +6,9 @@ class Amazonupload_model extends BF_Model {
 	protected $key			= "id";
 	protected $soft_deletes	= false;
 	protected $date_format	= "datetime";
-	protected $set_created	= false;
-	protected $set_modified = true;
-	protected $modified_field = "modified_on";
+	protected $set_created	= true;
+	protected $set_modified = false;
+	protected $modified_field = "created_on";
 	
 	/*
 		Returns a multidimensional array with filenames uploaded by the user logged in.
