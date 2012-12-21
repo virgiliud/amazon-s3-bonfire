@@ -28,7 +28,7 @@ Bonfire module for uploading images to Amazon S3. Works on Bonfire v0.6.
 
 ### That's all! 
 
-Suggestions or improvements are welcomed!
+Contribuitions are welcomed!
 
 There are a few things that need to be added/improved:
 
