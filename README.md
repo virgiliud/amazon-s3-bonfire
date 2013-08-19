@@ -15,17 +15,17 @@ Bonfire module for uploading images to Amazon S3. Works on Bonfire v0.6.
 ### Installation
 
 
- * Add all files to their appropriate folders in your Bonfire application.
+ * Add all files to their appropriate folders in your Bonfire application
 
- * Open the `config.inc.php` file located in `bonfire/codeigniter/libraries/awsphp/` and enter your Amazon S3 credentials.
+ * Open the `config.inc.php` file located in `bonfire/codeigniter/libraries/awsphp/` and enter your Amazon S3 credentials
 
- * Open the `aws.php` file located in `bonfire/modules/amazonupload/controllers/` and enter the name of your S3 bucket in the `$bucket` variables. 
+ * Open the `aws.php` file located in `bonfire/modules/amazonupload/controllers/` and enter the name of your S3 bucket in the `$bucket` variables
 
- * Add a context named `aws` to the contexts array in the `bonfire/application/config/application.php` file. Note: the context will appear when you're logged in as a user.
+ * Add a context named `aws` to the contexts array in the `bonfire/application/config/application.php` file. Note: the context will appear when you're logged in as a user
 
- * Log into your Bonfire application as Developer. In Database Migrations > Modules, select `002_Install_s3.php` for the `Amazonupload` module and click migrate module. This will install the db table for storing data about images uploaded to S3.
+ * Log into your Bonfire application as Developer. In Database Migrations > Modules, select `002_Install_s3.php` for the `Amazonupload` module and click migrate module. This will install the db table for storing data about images uploaded to S3
 
- * Test the module by logging in as a user and going to `yoursite/index.php/admin/aws/amazonupload`. The module is made to be used by users only.
+ * Test the module by logging in as a user and going to `yoursite/index.php/admin/aws/amazonupload`. The module is made to be used by users only
 
 
 ### That's all! 
